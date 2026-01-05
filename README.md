@@ -1,59 +1,328 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# PHP_Laravel12_Upgrade_Node_Version
+
 
 <p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
+  <img src="https://img.shields.io/badge/Laravel-12.x-FF2D20?style=for-the-badge&logo=laravel&logoColor=white" />
+  <img src="https://img.shields.io/badge/PHP-8.3+-777BB4?style=for-the-badge&logo=php&logoColor=white" />
+  <img src="https://img.shields.io/badge/Node.js-20_LTS-339933?style=for-the-badge&logo=node.js&logoColor=white" />
+  <img src="https://img.shields.io/badge/Vite-5.x-646CFF?style=for-the-badge&logo=vite&logoColor=white" />
+  <img src="https://img.shields.io/badge/TailwindCSS-3.x-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white" />
+  <img src="https://img.shields.io/badge/Platform-Windows_PowerShell-0078D6?style=for-the-badge&logo=windows&logoColor=white" />
+  <img src="https://img.shields.io/badge/Status-Node_Upgraded_&_Working-success?style=for-the-badge" />
 </p>
 
-## About Laravel
+##  Overview
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+It focuses on upgrading to **Node.js 18/20 (LTS)** and configuring a modern frontend stack using **Vite 5** and **Tailwind CSS 3**, ensuring better performance, compatibility, and long-term maintainability.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+---
 
-## Learning Laravel
+##  Features
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+* Laravel **12.x** compatible frontend setup
+* Node.js **18 / 20 (LTS)** support
+* Vite **5** for fast builds and hot module replacement (HMR)
+* Tailwind CSS **3** integration
+* Clean removal of old Node dependencies
+* Modern `package.json` configuration
+* Windows CMD / PowerShell friendly
+* Production-ready frontend workflow
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+---
 
-## Laravel Sponsors
+## Folder Structure
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+```text
+laravel12/
+├── app/
+├── bootstrap/
+├── config/
+├── public/
+├── resources/
+│   ├── css/
+│   │   └── app.css
+│   ├── js/
+│   │   └── app.js
+│   └── views/
+│       └── welcome.blade.php
+├── routes/
+├── storage/
+├── node_modules/
+├── tailwind.config.js
+├── postcss.config.js
+├── vite.config.js
+├── package.json
+└── .env
+```
 
-### Premium Partners
+---
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+---
 
-## Contributing
+## Step 1: System Requirements
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Make sure the following are installed on your system:
 
-## Code of Conduct
+* PHP 8.2+
+* Composer
+* Node.js 18 or 20 (LTS)
+* npm 9+
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+Check versions:
 
-## Security Vulnerabilities
+```bash
+php -v
+node -v
+npm -v
+composer -V
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+---
 
-## License
+## Step 2: Create New Laravel 12 Project
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+```bash
+composer create-project laravel/laravel laravel12
+```
+
+---
+
+## Step 3: Start Laravel Development Server
+
+```bash
+php artisan serve
+```
+
+➡️ Open browser:
+
+```
+http://127.0.0.1:8000
+```
+
+---
+
+## Step 4: Remove Old Dependencies (IMPORTANT)
+
+Old dependencies can cause version conflicts after upgrading Node.
+
+**PowerShell (Windows):**
+
+```powershell
+Remove-Item node_modules -Recurse -Force
+Remove-Item package-lock.json -Force
+```
+
+---
+
+## Step 5: Update Frontend Dependencies for Laravel 12
+
+Laravel 12 works best with Vite 5 and modern packages.
+
+**package.json**
+
+```json
+{
+    "private": true,
+    "type": "module",
+    "scripts": {
+        "dev": "vite",
+        "build": "vite build"
+    },
+    "devDependencies": {
+        "autoprefixer": "^10.4.23",
+        "axios": "^1.11.0",
+        "laravel-vite-plugin": "^2.0.0",
+        "postcss": "^8.5.6",
+        "tailwindcss": "^3.4.19",
+        "vite": "^5.4.0"
+    }
+}
+```
+
+---
+
+## Step 6: Install Frontend Dependencies
+
+```bash
+npm install
+```
+
+---
+
+## Step 7: Install Tailwind CSS (Required for CLI)
+
+```bash
+npm install -D tailwindcss postcss autoprefixer
+```
+
+---
+
+## Step 8: Generate Tailwind & PostCSS Config
+
+```bash
+npx tailwindcss init -p
+```
+
+Creates:
+
+* tailwind.config.js
+* postcss.config.js
+
+---
+
+## Step 9: Configure Tailwind
+
+tailwind.config.js
+```js
+export default {
+    content: [
+        "./resources/**/*.blade.php",
+        "./resources/**/*.js",
+    ],
+    theme: {
+        extend: {},
+    },
+    plugins: [],
+}
+```
+
+---
+
+## Step 10: Configure PostCSS
+
+postcss.config.js
+```js
+export default {
+    plugins: {
+        tailwindcss: {},
+        autoprefixer: {},
+    },
+}
+```
+
+---
+
+## Step 11: Add Tailwind Directives
+
+resources/css/app.css
+```css
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+```
+
+---
+
+## Step 12: Configure Vite
+
+vite.config.js
+```js
+import { defineConfig } from 'vite';
+import laravel from 'laravel-vite-plugin';
+
+export default defineConfig({
+    plugins: [
+        laravel({
+            input: [
+                'resources/css/app.css',
+                'resources/js/app.js'
+            ],
+            refresh: true,
+        }),
+    ],
+});
+```
+
+---
+
+## Step 13: JavaScript Entry File
+
+resources/js/app.js
+```js
+import './bootstrap';
+```
+
+---
+
+## Step 14: Update Welcome Page
+
+resources/views/welcome.blade.php
+```blade
+<!DOCTYPE html>
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<head>
+    <meta charset="utf-8"> <!-- Character encoding -->
+    <meta name="viewport" content="width=device-width, initial-scale=1"> <!-- Responsive -->
+
+    <title>{{ config('app.name', 'Laravel') }}</title>
+
+    <!-- Load compiled CSS & JS via Vite -->
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+</head>
+
+<body class="min-h-screen bg-gray-100 flex items-center justify-center">
+
+    <!-- Main card -->
+    <div class="bg-white shadow-lg rounded-lg p-10 text-center max-w-md w-full">
+
+        <!-- Heading -->
+        <h1 class="text-4xl font-bold text-red-600 mb-4">
+            Laravel 12
+        </h1>
+
+        <!-- Description -->
+        <p class="text-gray-600 mb-6">
+            Laravel 12 + Vite 5 + Tailwind CSS 3 successfully running 🚀
+        </p>
+
+        <!-- Buttons -->
+        <div class="flex justify-center gap-4">
+            <a href="https://laravel.com/docs"
+               class="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 transition">
+                Documentation
+            </a>
+
+            <a href="https://laracasts.com"
+               class="px-4 py-2 bg-gray-800 text-white rounded hover:bg-gray-900 transition">
+                Laracasts
+            </a>
+        </div>
+
+    </div>
+
+</body>
+</html>
+
+```
+
+---
+
+## Step 15: Clear Cache
+
+```bash
+php artisan optimize:clear
+```
+
+---
+
+## Step 16: Run Development Servers
+
+**Terminal 1 (Vite)**
+
+```bash
+npm run dev
+```
+
+**Terminal 2 (Laravel)**
+
+```bash
+php artisan serve
+```
+
+---
+
+## OUTPUT
+
+<img width="1919" height="996" alt="Screenshot 2026-01-05 115558" src="https://github.com/user-attachments/assets/3a7023c6-66b7-48d1-955c-004ea49a0fd8" />
+
