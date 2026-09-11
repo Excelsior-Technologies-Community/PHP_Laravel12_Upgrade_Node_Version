@@ -1,11 +1,14 @@
 export default {
-    // Files where Tailwind classes will be scanned
     content: [
         "./resources/**/*.blade.php",
         "./resources/**/*.js",
     ],
+
+    darkMode: 'class',
+
     theme: {
-        extend: {}, // Custom theme extensions
+        extend: {},
     },
-    plugins: [], // Tailwind plugins
-}
+
+    plugins: [],
+};

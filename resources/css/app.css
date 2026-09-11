@@ -1,3 +1,196 @@
-@tailwind base;        /* Tailwind base styles */
-@tailwind components; /* Tailwind components */
-@tailwind utilities;  /* Tailwind utility classes */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+/*
+|--------------------------------------------------------------------------
+| Base
+|--------------------------------------------------------------------------
+*/
+
+@layer base {
+
+    html {
+        scroll-behavior: smooth;
+    }
+
+    body {
+        font-family:
+            Inter,
+            ui-sans-serif,
+            system-ui,
+            -apple-system,
+            BlinkMacSystemFont,
+            "Segoe UI",
+            sans-serif;
+    }
+}
+
+
+/*
+|--------------------------------------------------------------------------
+| Reusable Dashboard Components
+|--------------------------------------------------------------------------
+*/
+
+@layer components {
+
+    .dashboard-card {
+        @apply flex items-center gap-4 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-md dark:border-slate-800 dark:bg-slate-900;
+    }
+
+    .version-icon {
+        @apply flex h-12 w-12 shrink-0 items-center justify-center rounded-xl text-sm font-bold;
+    }
+
+    .card-label {
+        @apply text-sm font-medium text-slate-500 dark:text-slate-400;
+    }
+
+    .version-value {
+        @apply mt-1 text-xl font-bold;
+    }
+
+    .status-text {
+        @apply mt-1 text-xs text-slate-400;
+    }
+
+    .section-title {
+        @apply text-2xl font-bold;
+    }
+
+    .section-description {
+        @apply mt-1 text-sm text-slate-500 dark:text-slate-400;
+    }
+
+    .package-card {
+        @apply rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-md dark:border-slate-800 dark:bg-slate-900;
+    }
+
+    .package-top {
+        @apply flex items-center justify-between gap-3;
+    }
+
+    .package-name {
+        @apply font-semibold;
+    }
+
+    .package-badge {
+        @apply rounded-full px-2.5 py-1 text-xs font-semibold;
+    }
+
+    .package-version {
+        @apply mt-4 font-mono text-sm text-slate-500 dark:text-slate-400;
+    }
+
+    .workflow-card {
+        @apply rounded-2xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900;
+    }
+
+    .workflow-title {
+        @apply text-lg font-bold;
+    }
+
+    .workflow-description {
+        @apply mt-1 text-sm text-slate-500 dark:text-slate-400;
+    }
+
+    .command-box {
+        @apply rounded-xl bg-slate-950 px-4 py-3 font-mono text-sm text-green-400;
+    }
+
+    .theme-manager {
+        @apply rounded-2xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900;
+    }
+
+    .theme-option {
+        @apply rounded-xl px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition duration-200 hover:-translate-y-0.5 hover:shadow-md;
+    }
+
+    .theme-red {
+        @apply bg-red-600 hover:bg-red-700;
+    }
+
+    .theme-blue {
+        @apply bg-blue-600 hover:bg-blue-700;
+    }
+
+    .theme-green {
+        @apply bg-green-600 hover:bg-green-700;
+    }
+
+    .theme-purple {
+        @apply bg-purple-600 hover:bg-purple-700;
+    }
+
+    .info-card {
+        @apply rounded-2xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900;
+    }
+
+    .info-label {
+        @apply text-sm font-medium text-slate-500 dark:text-slate-400;
+    }
+
+    .info-value {
+        @apply mt-2 font-mono text-sm font-semibold;
+    }
+}
+
+
+/*
+|--------------------------------------------------------------------------
+| Theme Accent Variables
+|--------------------------------------------------------------------------
+*/
+
+:root {
+    --theme-accent: #dc2626;
+}
+
+html[data-theme="red"] {
+    --theme-accent: #dc2626;
+}
+
+html[data-theme="blue"] {
+    --theme-accent: #2563eb;
+}
+
+html[data-theme="green"] {
+    --theme-accent: #16a34a;
+}
+
+html[data-theme="purple"] {
+    --theme-accent: #9333ea;
+}
+
+/*
+|--------------------------------------------------------------------------
+| Dynamic Accent Theme
+|--------------------------------------------------------------------------
+*/
+
+.theme-accent-bg {
+    background-color: var(--theme-accent);
+    color: white;
+}
+
+.theme-accent-bg:hover {
+    filter: brightness(0.9);
+}
+
+.theme-accent-text {
+    color: var(--theme-accent);
+}
+
+.theme-accent-border {
+    border-color: var(--theme-accent);
+}
+
+.theme-accent-ring {
+    box-shadow: 0 0 0 4px color-mix(
+        in srgb,
+        var(--theme-accent) 30%,
+        transparent
+    );
+}
