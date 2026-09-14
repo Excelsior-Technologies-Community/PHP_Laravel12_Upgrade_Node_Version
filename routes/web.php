@@ -13,13 +13,32 @@ Route::get('/', function () {
     return view('welcome');
 })->name('home');
 
+
 /*
 |--------------------------------------------------------------------------
 | Frontend Environment Dashboard
 |--------------------------------------------------------------------------
 */
 
-Route::get('/frontend-dashboard', [
-    FrontendDashboardController::class,
-    'index'
-])->name('frontend.dashboard');
+Route::get(
+    '/frontend-dashboard',
+    [
+        FrontendDashboardController::class,
+        'index'
+    ]
+)->name('frontend.dashboard');
+
+
+/*
+|--------------------------------------------------------------------------
+| Export Dashboard Report
+|--------------------------------------------------------------------------
+*/
+
+Route::get(
+    '/frontend-dashboard/export',
+    [
+        FrontendDashboardController::class,
+        'export'
+    ]
+)->name('frontend.dashboard.export');
