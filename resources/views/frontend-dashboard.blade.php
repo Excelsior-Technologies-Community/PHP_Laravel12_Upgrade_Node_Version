@@ -2,84 +2,107 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
 <head>
+
     <meta charset="utf-8">
 
     <meta
         name="viewport"
-        content="width=device-width, initial-scale=1"
-    >
+        content="width=device-width, initial-scale=1">
 
     <title>
-        Frontend Upgrade Dashboard
+        Frontend Environment Dashboard
     </title>
 
     @vite([
-        'resources/css/app.css',
-        'resources/js/app.js'
+    'resources/css/app.css',
+    'resources/js/app.js'
     ])
+
 </head>
 
-<body
-    class="min-h-screen bg-slate-100 text-slate-900 transition-colors duration-300 dark:bg-slate-950 dark:text-slate-100"
->
 
-    <!--
-    |--------------------------------------------------------------------------
-    | Navigation
-    |--------------------------------------------------------------------------
-    -->
+<body
+    class="min-h-screen bg-slate-100 text-slate-900 transition-colors duration-300 dark:bg-slate-950 dark:text-slate-100">
+
 
     <nav
-        class="border-b border-slate-200 bg-white/90 backdrop-blur dark:border-slate-800 dark:bg-slate-900/90"
-    >
+        class="border-b border-slate-200 bg-white/90 backdrop-blur dark:border-slate-800 dark:bg-slate-900/90">
+
         <div
-            class="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8"
-        >
+            class="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
 
             <div>
-<a 
-    href="{{ route('home') }}" 
-    class="text-xl font-bold theme-accent-text"
->
-    Laravel 12
-</a>
 
-                <span class="ml-2 hidden text-sm text-slate-500 sm:inline dark:text-slate-400">
-                    Frontend Upgrade Dashboard
+                <a
+                    href="{{ route('home') }}"
+                    class="text-xl font-bold theme-accent-text">
+                    Laravel 12
+                </a>
+
+                <span
+                    class="ml-2 hidden text-sm text-slate-500 sm:inline dark:text-slate-400">
+                    Frontend Environment Dashboard
                 </span>
+
             </div>
+
 
             <div class="flex items-center gap-2">
 
                 <a
                     href="{{ route('home') }}"
-                    class="rounded-lg px-3 py-2 text-sm font-medium hover:bg-slate-100 dark:hover:bg-slate-800"
-                >
+                    class="rounded-lg px-3 py-2 text-sm font-medium hover:bg-slate-100 dark:hover:bg-slate-800">
                     Home
                 </a>
+
+
+                <button
+                    type="button"
+                    id="refreshDashboard"
+                    class="rounded-lg border border-slate-300 px-3 py-2 text-sm font-medium transition hover:bg-slate-100 dark:border-slate-700 dark:hover:bg-slate-800">
+                    🔄
+                    <span class="hidden sm:inline">
+                        Refresh
+                    </span>
+                </button>
+
+
+                <a
+                    href="{{ route('frontend.dashboard.export') }}"
+                    class="rounded-lg bg-green-600 px-3 py-2 text-sm font-semibold text-white transition hover:bg-green-700">
+                    📥
+                    <span class="hidden sm:inline">
+                        Export
+                    </span>
+                </a>
+
 
                 <button
                     type="button"
                     id="themeToggle"
-                    class="rounded-lg border border-slate-300 px-3 py-2 text-sm font-medium transition hover:bg-slate-100 dark:border-slate-700 dark:hover:bg-slate-800"
-                >
-                    <span id="themeIcon">🌙</span>
-                    <span class="hidden sm:inline">Theme</span>
+                    class="rounded-lg border border-slate-300 px-3 py-2 text-sm font-medium transition hover:bg-slate-100 dark:border-slate-700 dark:hover:bg-slate-800">
+
+                    <span id="themeIcon">
+                        🌙
+                    </span>
+
+                    <span class="hidden sm:inline">
+                        Theme
+                    </span>
+
                 </button>
 
             </div>
 
         </div>
+
     </nav>
 
 
-    <!--
-    |--------------------------------------------------------------------------
-    | Main Content
-    |--------------------------------------------------------------------------
-    -->
 
-    <main class="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+    <main
+        class="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+
 
         <!-- Header -->
 
@@ -88,154 +111,307 @@
             <div class="mb-3 flex flex-wrap items-center gap-2">
 
                 <span
-                    class="rounded-full bg-green-100 px-3 py-1 text-xs font-semibold text-green-700 dark:bg-green-900/40 dark:text-green-300"
-                >
+                    class="rounded-full bg-green-100 px-3 py-1 text-xs font-semibold text-green-700 dark:bg-green-900/40 dark:text-green-300">
                     ● Frontend Ready
                 </span>
 
-                <span
-                    class="rounded-full bg-blue-100 px-3 py-1 text-xs font-semibold text-blue-700 dark:bg-blue-900/40 dark:text-blue-300"
-                >
-                    Vite 5
-                </span>
 
                 <span
-                    class="rounded-full bg-cyan-100 px-3 py-1 text-xs font-semibold text-cyan-700 dark:bg-cyan-900/40 dark:text-cyan-300"
-                >
-                    Tailwind CSS 3
+                    class="rounded-full bg-blue-100 px-3 py-1 text-xs font-semibold text-blue-700 dark:bg-blue-900/40 dark:text-blue-300">
+                    Vite
+                    {{ $viteVersion }}
+                </span>
+
+
+                <span
+                    class="rounded-full bg-cyan-100 px-3 py-1 text-xs font-semibold text-cyan-700 dark:bg-cyan-900/40 dark:text-cyan-300">
+                    Tailwind
+                    {{ $tailwindVersion }}
                 </span>
 
             </div>
 
-<h1 class="theme-accent-text text-3xl font-bold tracking-tight sm:text-4xl">
-    Frontend Environment Dashboard
-</h1>
 
-            <p class="mt-2 max-w-3xl text-slate-600 dark:text-slate-400">
-                Monitor the Laravel, PHP, Node.js, npm, Vite and Tailwind CSS
-                environment used by this Laravel 12 frontend.
+            <h1
+                class="theme-accent-text text-3xl font-bold tracking-tight sm:text-4xl">
+                Frontend Environment Dashboard
+            </h1>
+
+
+            <p
+                class="mt-2 max-w-3xl text-slate-600 dark:text-slate-400">
+                Monitor Laravel, PHP, Node.js, npm, Vite, Tailwind CSS
+                and the complete frontend development environment.
             </p>
 
+
+            <!-- Search -->
+
+            <div class="mt-6 max-w-xl">
+
+                <div class="relative">
+
+                    <input
+                        type="text"
+                        id="dashboardSearch"
+                        placeholder="Search dashboard..."
+                        class="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 pl-11 text-sm outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 dark:border-slate-700 dark:bg-slate-900">
+
+                    <span
+                        class="absolute left-4 top-1/2 -translate-y-1/2">
+                        🔍
+                    </span>
+
+                </div>
+
+            </div>
+
         </div>
 
 
-        <!--
-        |--------------------------------------------------------------------------
-        | Environment Cards
-        |--------------------------------------------------------------------------
-        -->
 
-        <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+        <!-- Health -->
 
-            <!-- Laravel -->
+        <section
+            class="dashboard-section"
+            data-search="health environment status system">
 
-            <div class="dashboard-card">
-
-<div class="version-icon theme-accent-bg">
-    L
-</div>
+            <div
+                class="mb-4 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
 
                 <div>
-                    <p class="card-label">
-                        Laravel
+
+                    <h2 class="section-title">
+                        Environment Health
+                    </h2>
+
+                    <p class="section-description">
+                        Overall frontend environment health.
                     </p>
 
-                    <p class="version-value">
-                        {{ $laravelVersion }}
+                </div>
+
+
+                <div class="text-right">
+
+                    <p class="text-3xl font-black theme-accent-text">
+                        {{ $healthPercentage }}%
                     </p>
 
-                    <p class="status-text">
-                        Framework
+                    <p class="text-xs text-slate-500">
+                        {{ $healthyCount }}
+                        / {{ $totalChecks }}
+                        checks healthy
                     </p>
+
                 </div>
 
             </div>
 
 
-            <!-- PHP -->
+            <div
+                class="mb-6 h-3 overflow-hidden rounded-full bg-slate-200 dark:bg-slate-800">
 
-            <div class="dashboard-card">
-
-                <div class="version-icon bg-indigo-100 text-indigo-600 dark:bg-indigo-900/40 dark:text-indigo-300">
-                    P
-                </div>
-
-                <div>
-                    <p class="card-label">
-                        PHP
-                    </p>
-
-                    <p class="version-value">
-                        {{ $phpVersion }}
-                    </p>
-
-                    <p class="status-text">
-                        Runtime
-                    </p>
-                </div>
+                <div
+                    class="health-bar h-full rounded-full"
+                    style="width: {{ $healthPercentage }}%"></div>
 
             </div>
 
 
-            <!-- Node -->
+            <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
 
-            <div class="dashboard-card">
+                @foreach($environmentChecks as $name => $healthy)
 
-                <div class="version-icon bg-green-100 text-green-600 dark:bg-green-900/40 dark:text-green-300">
-                    N
+                <div class="dashboard-card">
+
+                    <div
+                        class="flex h-11 w-11 items-center justify-center rounded-xl
+                    {{ $healthy
+                        ? 'bg-green-100 text-green-600 dark:bg-green-900/40 dark:text-green-300'
+                        : 'bg-red-100 text-red-600 dark:bg-red-900/40 dark:text-red-300'
+                    }}">
+                        {{ $healthy ? '✓' : '!' }}
+                    </div>
+
+
+                    <div>
+
+                        <p class="card-label">
+                            {{ $name }}
+                        </p>
+
+                        <p
+                            class="mt-1 text-sm font-semibold
+                        {{ $healthy
+                            ? 'text-green-600 dark:text-green-400'
+                            : 'text-red-600 dark:text-red-400'
+                        }}">
+                            {{ $healthy ? 'Healthy' : 'Not Available' }}
+                        </p>
+
+                    </div>
+
                 </div>
 
-                <div>
-                    <p class="card-label">
-                        Node.js
-                    </p>
+                @endforeach
 
-                    <p class="version-value">
-                        {{ $nodeVersion }}
-                    </p>
+            </div>
 
-                    <p class="status-text">
-                        JavaScript Runtime
-                    </p>
-                </div>
+        </section>
+
+
+
+        <!-- Environment -->
+
+        <section
+            class="mt-8 dashboard-section"
+            data-search="laravel php node npm runtime environment versions">
+
+            <div class="mb-4">
+
+                <h2 class="section-title">
+                    Environment Versions
+                </h2>
+
+                <p class="section-description">
+                    Runtime versions currently detected by Laravel.
+                </p>
 
             </div>
 
 
-            <!-- npm -->
+            <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
 
-            <div class="dashboard-card">
+                <div class="dashboard-card">
 
-                <div class="version-icon bg-red-100 text-red-600 dark:bg-red-900/40 dark:text-red-300">
-                    npm
+                    <div class="version-icon theme-accent-bg">
+                        L
+                    </div>
+
+                    <div>
+
+                        <p class="card-label">
+                            Laravel
+                        </p>
+
+                        <p class="version-value">
+                            {{ $laravelVersion }}
+                        </p>
+
+                        <p class="status-text">
+                            Framework
+                        </p>
+
+                    </div>
+
                 </div>
 
-                <div>
-                    <p class="card-label">
+
+                <div class="dashboard-card">
+
+                    <div
+                        class="version-icon bg-indigo-100 text-indigo-600 dark:bg-indigo-900/40 dark:text-indigo-300">
+                        P
+                    </div>
+
+                    <div>
+
+                        <p class="card-label">
+                            PHP
+                        </p>
+
+                        <p class="version-value">
+                            {{ $phpVersion }}
+                        </p>
+
+                        <p class="status-text">
+                            Runtime
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="dashboard-card">
+
+                    <div
+                        class="version-icon bg-green-100 text-green-600 dark:bg-green-900/40 dark:text-green-300">
+                        N
+                    </div>
+
+                    <div>
+
+                        <p class="card-label">
+                            Node.js
+                        </p>
+
+                        <p class="version-value">
+                            {{ $nodeVersion }}
+
+                            <button
+                                type="button"
+                                class="copy-btn ml-1"
+                                data-copy="{{ $nodeVersion }}">
+                                📋
+                            </button>
+
+                        </p>
+
+                        <p class="status-text">
+                            JavaScript Runtime
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="dashboard-card">
+
+                    <div
+                        class="version-icon bg-red-100 text-red-600 dark:bg-red-900/40 dark:text-red-300">
                         npm
-                    </p>
+                    </div>
 
-                    <p class="version-value">
-                        {{ $npmVersion }}
-                    </p>
+                    <div>
 
-                    <p class="status-text">
-                        Package Manager
-                    </p>
+                        <p class="card-label">
+                            npm
+                        </p>
+
+                        <p class="version-value">
+                            {{ $npmVersion }}
+
+                            <button
+                                type="button"
+                                class="copy-btn"
+                                data-copy="{{ $npmVersion }}">
+                                📋
+                            </button>
+
+                        </p>
+
+                        <p class="status-text">
+                            Package Manager
+                        </p>
+
+                    </div>
+
                 </div>
 
             </div>
 
-        </div>
+        </section>
 
 
-        <!--
-        |--------------------------------------------------------------------------
-        | Frontend Packages
-        |--------------------------------------------------------------------------
-        -->
 
-        <section class="mt-8">
+        <!-- Frontend Packages -->
+
+        <section
+            class="mt-8 dashboard-section"
+            data-search="vite tailwind postcss autoprefixer frontend packages">
 
             <div class="mb-4">
 
@@ -252,93 +428,97 @@
 
             <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
 
-                <div class="package-card">
+                @php
 
-                    <div class="package-top">
-                        <span class="package-name">
-                            Vite
-                        </span>
+                $frontendPackages = [
 
-                        <span class="package-badge bg-purple-100 text-purple-700 dark:bg-purple-900/40 dark:text-purple-300">
-                            Build Tool
-                        </span>
-                    </div>
+                [
+                'name' => 'Vite',
+                'version' => $viteVersion,
+                'type' => 'Build Tool',
+                'color' => 'purple'
+                ],
 
-                    <p class="package-version">
-                        {{ $viteVersion }}
-                    </p>
+                [
+                'name' => 'Tailwind CSS',
+                'version' => $tailwindVersion,
+                'type' => 'CSS',
+                'color' => 'cyan'
+                ],
 
-                </div>
+                [
+                'name' => 'PostCSS',
+                'version' => $postcssVersion,
+                'type' => 'Processor',
+                'color' => 'orange'
+                ],
+
+                [
+                'name' => 'Autoprefixer',
+                'version' => $autoprefixerVersion,
+                'type' => 'CSS',
+                'color' => 'blue'
+                ],
+
+                ];
+
+                @endphp
 
 
-                <div class="package-card">
-
-                    <div class="package-top">
-                        <span class="package-name">
-                            Tailwind CSS
-                        </span>
-
-                        <span class="package-badge bg-cyan-100 text-cyan-700 dark:bg-cyan-900/40 dark:text-cyan-300">
-                            CSS
-                        </span>
-                    </div>
-
-                    <p class="package-version">
-                        {{ $tailwindVersion }}
-                    </p>
-
-                </div>
-
-
-                <div class="package-card">
-
-                    <div class="package-top">
-                        <span class="package-name">
-                            PostCSS
-                        </span>
-
-                        <span class="package-badge bg-orange-100 text-orange-700 dark:bg-orange-900/40 dark:text-orange-300">
-                            Processor
-                        </span>
-                    </div>
-
-                    <p class="package-version">
-                        {{ $postcssVersion }}
-                    </p>
-
-                </div>
-
+                @foreach($frontendPackages as $package)
 
                 <div class="package-card">
 
                     <div class="package-top">
+
                         <span class="package-name">
-                            Autoprefixer
+                            {{ $package['name'] }}
                         </span>
 
-                        <span class="package-badge bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-300">
-                            CSS
+                        <span
+                            class="package-badge
+                        bg-{{ $package['color'] }}-100
+                        text-{{ $package['color'] }}-700
+                        dark:bg-{{ $package['color'] }}-900/40
+                        dark:text-{{ $package['color'] }}-300">
+                            {{ $package['type'] }}
                         </span>
+
                     </div>
 
-                    <p class="package-version">
-                        {{ $autoprefixerVersion }}
-                    </p>
+
+                    <div
+                        class="mt-4 flex items-center justify-between gap-2">
+
+                        <p class="package-version">
+                            {{ $package['version'] }}
+                        </p>
+
+
+                        <button
+                            type="button"
+                            class="copy-btn"
+                            data-copy="{{ $package['name'] }} {{ $package['version'] }}">
+                            📋 Copy
+                        </button>
+
+                    </div>
 
                 </div>
+
+                @endforeach
 
             </div>
 
         </section>
 
 
-        <!--
-        |--------------------------------------------------------------------------
-        | Build Status
-        |--------------------------------------------------------------------------
-        -->
 
-        <section class="mt-8">
+        <!-- Build Status -->
+
+        <section
+            class="mt-8 dashboard-section"
+            data-search="build vite production manifest npm dev build">
 
             <div class="mb-4">
 
@@ -354,48 +534,50 @@
 
 
             <div
-                class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900"
-            >
+                class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900">
 
-                <div class="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
+                <div
+                    class="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
 
                     <div class="flex items-center gap-4">
 
                         @if($buildStatus)
 
-                            <div class="flex h-12 w-12 items-center justify-center rounded-full bg-green-100 text-xl text-green-600 dark:bg-green-900/40 dark:text-green-300">
-                                ✓
-                            </div>
+                        <div
+                            class="flex h-12 w-12 items-center justify-center rounded-full bg-green-100 text-xl text-green-600 dark:bg-green-900/40 dark:text-green-300">
+                            ✓
+                        </div>
 
-                            <div>
+                        <div>
 
-                                <h3 class="font-semibold">
-                                    Production build detected
-                                </h3>
+                            <h3 class="font-semibold">
+                                Production build detected
+                            </h3>
 
-                                <p class="text-sm text-slate-500 dark:text-slate-400">
-                                    public/build/manifest.json is available.
-                                </p>
+                            <p class="text-sm text-slate-500 dark:text-slate-400">
+                                public/build/manifest.json is available.
+                            </p>
 
-                            </div>
+                        </div>
 
                         @else
 
-                            <div class="flex h-12 w-12 items-center justify-center rounded-full bg-amber-100 text-xl text-amber-600 dark:bg-amber-900/40 dark:text-amber-300">
-                                !
-                            </div>
+                        <div
+                            class="flex h-12 w-12 items-center justify-center rounded-full bg-amber-100 text-xl text-amber-600 dark:bg-amber-900/40 dark:text-amber-300">
+                            !
+                        </div>
 
-                            <div>
+                        <div>
 
-                                <h3 class="font-semibold">
-                                    Development build active
-                                </h3>
+                            <h3 class="font-semibold">
+                                Development build active
+                            </h3>
 
-                                <p class="text-sm text-slate-500 dark:text-slate-400">
-                                    No production manifest detected. Run npm run build when required.
-                                </p>
+                            <p class="text-sm text-slate-500 dark:text-slate-400">
+                                No production manifest detected.
+                            </p>
 
-                            </div>
+                        </div>
 
                         @endif
 
@@ -404,11 +586,11 @@
 
                     <div class="flex flex-wrap gap-2">
 
-                        <code class="rounded-lg bg-slate-100 px-3 py-2 text-sm dark:bg-slate-800">
+                        <code class="command-copy command-box">
                             npm run dev
                         </code>
 
-                        <code class="rounded-lg bg-slate-100 px-3 py-2 text-sm dark:bg-slate-800">
+                        <code class="command-copy command-box">
                             npm run build
                         </code>
 
@@ -421,111 +603,161 @@
         </section>
 
 
-        <!--
-        |--------------------------------------------------------------------------
-        | Vite Workflow
-        |--------------------------------------------------------------------------
-        -->
 
-        <section class="mt-8">
+        <!-- Project Statistics -->
+
+        <section
+            class="mt-8 dashboard-section"
+            data-search="statistics files controllers blade javascript css migrations routes project">
 
             <div class="mb-4">
 
                 <h2 class="section-title">
-                    Vite Frontend Workflow
+                    Project Statistics
                 </h2>
 
                 <p class="section-description">
-                    Development and production commands used by the project.
+                    Basic statistics collected from the project structure.
                 </p>
 
             </div>
 
 
-            <div class="grid gap-5 md:grid-cols-2">
+            <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
 
-                <!-- Development -->
+                @foreach($projectStatistics as $name => $count)
 
-                <div class="workflow-card">
+                <div class="stat-card">
 
-                    <div class="mb-4 flex items-center justify-between">
+                    <p class="text-sm text-slate-500 dark:text-slate-400">
+                        {{ ucfirst($name) }}
+                    </p>
 
-                        <div>
+                    <p class="mt-2 text-3xl font-black theme-accent-text">
+                        {{ $count }}
+                    </p>
 
-                            <h3 class="workflow-title">
-                                Development Mode
-                            </h3>
-
-                            <p class="workflow-description">
-                                Enables Vite development server and HMR.
-                            </p>
-
-                        </div>
-
-                        <span class="rounded-full bg-green-100 px-3 py-1 text-xs font-semibold text-green-700 dark:bg-green-900/40 dark:text-green-300">
-                            DEV
-                        </span>
-
-                    </div>
-
-
-                    <div class="command-box">
-                        npm run dev
-                    </div>
-
-
-                    <ul class="mt-4 space-y-2 text-sm text-slate-600 dark:text-slate-400">
-
-                        <li>✓ Hot Module Replacement</li>
-
-                        <li>✓ Fast frontend development</li>
-
-                        <li>✓ Automatic browser refresh</li>
-
-                    </ul>
+                    <p class="mt-1 text-xs text-slate-400">
+                        Files
+                    </p>
 
                 </div>
 
+                @endforeach
 
-                <!-- Production -->
+            </div>
 
-                <div class="workflow-card">
-
-                    <div class="mb-4 flex items-center justify-between">
-
-                        <div>
-
-                            <h3 class="workflow-title">
-                                Production Mode
-                            </h3>
-
-                            <p class="workflow-description">
-                                Compiles optimized frontend assets.
-                            </p>
-
-                        </div>
-
-                        <span class="rounded-full bg-blue-100 px-3 py-1 text-xs font-semibold text-blue-700 dark:bg-blue-900/40 dark:text-blue-300">
-                            BUILD
-                        </span>
-
-                    </div>
+        </section>
 
 
-                    <div class="command-box">
-                        npm run build
-                    </div>
+
+        <!-- Dependencies -->
+
+        <section
+            class="mt-8 dashboard-section"
+            data-search="dependencies package json npm packages">
+
+            <div class="mb-4">
+
+                <h2 class="section-title">
+                    NPM Dependencies
+                </h2>
+
+                <p class="section-description">
+                    All dependencies configured in package.json.
+                </p>
+
+            </div>
 
 
-                    <ul class="mt-4 space-y-2 text-sm text-slate-600 dark:text-slate-400">
+            <div
+                class="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900">
 
-                        <li>✓ Minified CSS</li>
+                <div class="overflow-x-auto">
 
-                        <li>✓ Optimized JavaScript</li>
+                    <table class="w-full text-left text-sm">
 
-                        <li>✓ Production asset manifest</li>
+                        <thead
+                            class="bg-slate-100 dark:bg-slate-800">
 
-                    </ul>
+                            <tr>
+
+                                <th class="px-5 py-4">
+                                    Package
+                                </th>
+
+                                <th class="px-5 py-4">
+                                    Version
+                                </th>
+
+                                <th class="px-5 py-4">
+                                    Type
+                                </th>
+
+                                <th class="px-5 py-4 text-right">
+                                    Action
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+
+                        <tbody>
+
+                            @forelse($allDependencies as $dependency)
+
+                            <tr
+                                class="border-t border-slate-200 dark:border-slate-800">
+
+                                <td class="px-5 py-4 font-semibold">
+                                    {{ $dependency['name'] }}
+                                </td>
+
+                                <td
+                                    class="px-5 py-4 font-mono text-slate-500">
+                                    {{ $dependency['version'] }}
+                                </td>
+
+                                <td class="px-5 py-4">
+
+                                    <span
+                                        class="rounded-full bg-blue-100 px-3 py-1 text-xs font-semibold text-blue-700 dark:bg-blue-900/40 dark:text-blue-300">
+                                        {{ $dependency['type'] }}
+                                    </span>
+
+                                </td>
+
+                                <td class="px-5 py-4 text-right">
+
+                                    <button
+                                        type="button"
+                                        class="copy-btn"
+                                        data-copy="{{ $dependency['name'] }}@{{ $dependency['version'] }}">
+                                        📋 Copy
+                                    </button>
+
+                                </td>
+
+                            </tr>
+
+                            @empty
+
+                            <tr>
+
+                                <td
+                                    colspan="4"
+                                    class="px-5 py-8 text-center text-slate-500">
+                                    No NPM dependencies found.
+                                </td>
+
+                            </tr>
+
+                            @endforelse
+
+                        </tbody>
+
+                    </table>
 
                 </div>
 
@@ -534,13 +766,121 @@
         </section>
 
 
-        <!--
-        |--------------------------------------------------------------------------
-        | Theme Manager
-        |--------------------------------------------------------------------------
-        -->
 
-        <section class="mt-8">
+        <!-- NPM Scripts -->
+
+        <section
+            class="mt-8 dashboard-section"
+            data-search="npm scripts package commands dev build script">
+
+            <div class="mb-4">
+
+                <h2 class="section-title">
+                    NPM Scripts
+                </h2>
+
+                <p class="section-description">
+                    Commands configured inside package.json.
+                </p>
+
+            </div>
+
+
+            <div class="grid gap-4 md:grid-cols-2">
+
+                @forelse($scripts as $name => $command)
+
+                <div class="workflow-card">
+
+                    <div class="flex items-center justify-between gap-3">
+
+                        <div>
+
+                            <p class="font-bold">
+                                npm run {{ $name }}
+                            </p>
+
+                            <p
+                                class="mt-1 font-mono text-xs text-slate-500 dark:text-slate-400">
+                                {{ $command }}
+                            </p>
+
+                        </div>
+
+
+                        <button
+                            type="button"
+                            class="copy-btn"
+                            data-copy="npm run {{ $name }}">
+                            📋
+                        </button>
+
+                    </div>
+
+                </div>
+
+                @empty
+
+                <div class="info-card">
+                    No npm scripts configured.
+                </div>
+
+                @endforelse
+
+            </div>
+
+        </section>
+
+
+
+        <!-- Environment Information -->
+
+        <section
+            class="mt-8 dashboard-section"
+            data-search="environment app debug url server operating system">
+
+            <div class="mb-4">
+
+                <h2 class="section-title">
+                    Laravel Environment
+                </h2>
+
+                <p class="section-description">
+                    Current application environment information.
+                </p>
+
+            </div>
+
+
+            <div class="grid gap-5 md:grid-cols-2">
+
+                @foreach($environment as $key => $value)
+
+                <div class="info-card">
+
+                    <p class="info-label">
+                        {{ $key }}
+                    </p>
+
+                    <p class="info-value">
+                        {{ $value }}
+                    </p>
+
+                </div>
+
+                @endforeach
+
+            </div>
+
+        </section>
+
+
+
+        <!-- Theme Manager -->
+
+        <section
+            class="mt-8 dashboard-section"
+            data-search="theme color red blue green purple dark mode">
 
             <div class="mb-4">
 
@@ -549,8 +889,7 @@
                 </h2>
 
                 <p class="section-description">
-                    Change the interface theme instantly. Your selection is saved
-                    in browser local storage.
+                    Change the interface accent color and dark mode.
                 </p>
 
             </div>
@@ -558,17 +897,9 @@
 
             <div class="theme-manager">
 
-                <div>
-
-                    <h3 class="font-semibold">
-                        Color Theme
-                    </h3>
-
-                    <p class="mt-1 text-sm text-slate-500 dark:text-slate-400">
-                        Select an accent color.
-                    </p>
-
-                </div>
+                <h3 class="font-semibold">
+                    Accent Color
+                </h3>
 
 
                 <div class="mt-5 flex flex-wrap gap-3">
@@ -576,32 +907,31 @@
                     <button
                         type="button"
                         class="theme-option theme-red"
-                        data-theme="red"
-                    >
+                        data-theme="red">
                         Red
                     </button>
+
 
                     <button
                         type="button"
                         class="theme-option theme-blue"
-                        data-theme="blue"
-                    >
+                        data-theme="blue">
                         Blue
                     </button>
+
 
                     <button
                         type="button"
                         class="theme-option theme-green"
-                        data-theme="green"
-                    >
+                        data-theme="green">
                         Green
                     </button>
+
 
                     <button
                         type="button"
                         class="theme-option theme-purple"
-                        data-theme="purple"
-                    >
+                        data-theme="purple">
                         Purple
                     </button>
 
@@ -612,64 +942,44 @@
         </section>
 
 
-        <!--
-        |--------------------------------------------------------------------------
-        | Package Information
-        |--------------------------------------------------------------------------
-        -->
 
-        <section class="mt-8">
+        <!-- Last Checked -->
 
-            <div class="mb-4">
+        <div
+            class="mt-8 rounded-2xl border border-slate-200 bg-white p-5 text-center shadow-sm dark:border-slate-800 dark:bg-slate-900">
 
-                <h2 class="section-title">
-                    Project Information
-                </h2>
+            <p class="text-sm text-slate-500 dark:text-slate-400">
+                Last dashboard check
+            </p>
 
-            </div>
+            <p class="mt-1 font-semibold">
+                {{ $lastChecked }}
+            </p>
 
-
-            <div class="grid gap-5 md:grid-cols-2">
-
-                <div class="info-card">
-
-                    <p class="info-label">
-                        Package Name
-                    </p>
-
-                    <p class="info-value">
-                        {{ $packageName }}
-                    </p>
-
-                </div>
+        </div>
 
 
-                <div class="info-card">
-
-                    <p class="info-label">
-                        Laravel Vite Plugin
-                    </p>
-
-                    <p class="info-value">
-                        {{ $laravelViteVersion }}
-                    </p>
-
-                </div>
-
-            </div>
-
-        </section>
-
-
-        <!-- Footer -->
 
         <footer
-            class="mt-12 border-t border-slate-200 py-6 text-center text-sm text-slate-500 dark:border-slate-800 dark:text-slate-400"
-        >
-            Laravel 12 · Node.js · Vite 5 · Tailwind CSS 3
+            class="mt-12 border-t border-slate-200 py-6 text-center text-sm text-slate-500 dark:border-slate-800 dark:text-slate-400">
+
+            Laravel 12 · Node.js · Vite · Tailwind CSS
+
         </footer>
+
 
     </main>
 
+
+    <!-- Toast -->
+
+    <div
+        id="toast"
+        class="fixed bottom-5 right-5 z-50 hidden rounded-xl bg-slate-900 px-5 py-3 text-sm font-semibold text-white shadow-xl">
+        Copied!
+    </div>
+
+
 </body>
+
 </html>
