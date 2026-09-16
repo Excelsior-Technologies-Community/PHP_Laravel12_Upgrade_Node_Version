@@ -1,985 +1,329 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-
+<html lang="en" class="dark">
 <head>
-
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Node.js & Frontend Environment Dashboard - Laravel 12</title>
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1">
+    {{-- Tailwind CSS CDN + Lucide Icons --}}
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f0fdf4',
+                            500: '#22c55e',
+                            600: '#16a34a',
+                            900: '#14532d',
+                            950: '#052e16',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <script src="https://unpkg.com/lucide@latest"></script>
 
-    <title>
-        Frontend Environment Dashboard
-    </title>
-
-    @vite([
-    'resources/css/app.css',
-    'resources/js/app.js'
-    ])
-
+    <style>
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: #0f172a; }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #475569; }
+    </style>
 </head>
 
+<body class="bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-100 min-h-screen flex flex-col antialiased transition-colors duration-200">
 
-<body
-    class="min-h-screen bg-slate-100 text-slate-900 transition-colors duration-300 dark:bg-slate-950 dark:text-slate-100">
-
-
-    <nav
-        class="border-b border-slate-200 bg-white/90 backdrop-blur dark:border-slate-800 dark:bg-slate-900/90">
-
-        <div
-            class="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
-
-            <div>
-
-                <a
-                    href="{{ route('home') }}"
-                    class="text-xl font-bold theme-accent-text">
-                    Laravel 12
-                </a>
-
-                <span
-                    class="ml-2 hidden text-sm text-slate-500 sm:inline dark:text-slate-400">
-                    Frontend Environment Dashboard
-                </span>
-
-            </div>
-
-
-            <div class="flex items-center gap-2">
-
-                <a
-                    href="{{ route('home') }}"
-                    class="rounded-lg px-3 py-2 text-sm font-medium hover:bg-slate-100 dark:hover:bg-slate-800">
-                    Home
-                </a>
-
-
-                <button
-                    type="button"
-                    id="refreshDashboard"
-                    class="rounded-lg border border-slate-300 px-3 py-2 text-sm font-medium transition hover:bg-slate-100 dark:border-slate-700 dark:hover:bg-slate-800">
-                    🔄
-                    <span class="hidden sm:inline">
-                        Refresh
-                    </span>
-                </button>
-
-
-                <a
-                    href="{{ route('frontend.dashboard.export') }}"
-                    class="rounded-lg bg-green-600 px-3 py-2 text-sm font-semibold text-white transition hover:bg-green-700">
-                    📥
-                    <span class="hidden sm:inline">
-                        Export
-                    </span>
-                </a>
-
-
-                <button
-                    type="button"
-                    id="themeToggle"
-                    class="rounded-lg border border-slate-300 px-3 py-2 text-sm font-medium transition hover:bg-slate-100 dark:border-slate-700 dark:hover:bg-slate-800">
-
-                    <span id="themeIcon">
-                        🌙
-                    </span>
-
-                    <span class="hidden sm:inline">
-                        Theme
-                    </span>
-
-                </button>
-
-            </div>
-
-        </div>
-
-    </nav>
-
-
-
-    <main
-        class="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
-
-
-        <!-- Header -->
-
-        <div class="mb-8">
-
-            <div class="mb-3 flex flex-wrap items-center gap-2">
-
-                <span
-                    class="rounded-full bg-green-100 px-3 py-1 text-xs font-semibold text-green-700 dark:bg-green-900/40 dark:text-green-300">
-                    ● Frontend Ready
-                </span>
-
-
-                <span
-                    class="rounded-full bg-blue-100 px-3 py-1 text-xs font-semibold text-blue-700 dark:bg-blue-900/40 dark:text-blue-300">
-                    Vite
-                    {{ $viteVersion }}
-                </span>
-
-
-                <span
-                    class="rounded-full bg-cyan-100 px-3 py-1 text-xs font-semibold text-cyan-700 dark:bg-cyan-900/40 dark:text-cyan-300">
-                    Tailwind
-                    {{ $tailwindVersion }}
-                </span>
-
-            </div>
-
-
-            <h1
-                class="theme-accent-text text-3xl font-bold tracking-tight sm:text-4xl">
-                Frontend Environment Dashboard
-            </h1>
-
-
-            <p
-                class="mt-2 max-w-3xl text-slate-600 dark:text-slate-400">
-                Monitor Laravel, PHP, Node.js, npm, Vite, Tailwind CSS
-                and the complete frontend development environment.
-            </p>
-
-
-            <!-- Search -->
-
-            <div class="mt-6 max-w-xl">
-
-                <div class="relative">
-
-                    <input
-                        type="text"
-                        id="dashboardSearch"
-                        placeholder="Search dashboard..."
-                        class="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 pl-11 text-sm outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 dark:border-slate-700 dark:bg-slate-900">
-
-                    <span
-                        class="absolute left-4 top-1/2 -translate-y-1/2">
-                        🔍
-                    </span>
-
+    {{-- Header Navbar --}}
+    <header class="sticky top-0 z-40 border-b border-slate-200 dark:border-slate-800 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                {{-- Brand --}}
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 rounded-xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center shadow-lg shadow-emerald-500/10 text-emerald-500">
+                        <i data-lucide="layers" class="w-5 h-5"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-base font-bold bg-gradient-to-r from-emerald-500 via-teal-400 to-cyan-500 bg-clip-text text-transparent">
+                            Node.js & Frontend Suite
+                        </h1>
+                        <div class="text-xs text-slate-500 dark:text-slate-400 flex items-center gap-1.5 font-mono">
+                            <span class="inline-block w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                            Laravel 12 • Node {{ $nodeVersion }} • Vite 5
+                        </div>
+                    </div>
                 </div>
 
+                {{-- Right Actions & Theme Switcher --}}
+                <div class="flex items-center space-x-2 sm:space-x-3">
+                    {{-- Dark/Light Mode Switcher --}}
+                    <button id="themeToggleBtn" onclick="toggleTheme()" class="p-2 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-amber-400 hover:scale-105 transition-all" title="Toggle Dark/Light Mode">
+                        <i id="themeIcon" data-lucide="sun" class="w-4 h-4"></i>
+                    </button>
+
+                    {{-- Export Diagnostics --}}
+                    <a href="{{ route('frontend.dashboard.export') }}" target="_blank" class="px-3.5 py-2 rounded-xl text-xs font-semibold bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700 flex items-center gap-1.5 transition-all">
+                        <i data-lucide="file-json" class="w-3.5 h-3.5 text-emerald-500"></i>
+                        <span class="hidden sm:inline">Export Report</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    {{-- Flash Messages --}}
+    @if(session('success'))
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-4 w-full">
+            <div class="p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-600 dark:text-emerald-400 flex items-center justify-between">
+                <div class="flex items-center gap-2 text-xs font-medium">
+                    <i data-lucide="check-circle" class="w-4 h-4 text-emerald-500"></i>
+                    <span>{{ session('success') }}</span>
+                </div>
+            </div>
+        </div>
+    @endif
+
+    {{-- Main Container --}}
+    <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
+
+        {{-- Top Metrics Grid --}}
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            {{-- Node.js Status --}}
+            <div class="p-5 rounded-2xl bg-white dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 shadow-sm">
+                <div class="flex items-center justify-between text-slate-500 dark:text-slate-400 mb-2">
+                    <span class="text-xs font-bold uppercase tracking-wider">Node.js Engine</span>
+                    <i data-lucide="box" class="w-4 h-4 text-emerald-500"></i>
+                </div>
+                <div class="text-2xl font-bold font-mono text-slate-900 dark:text-white">{{ $nodeVersion }}</div>
+                <div class="text-xs text-emerald-500 font-medium mt-1 flex items-center gap-1">
+                    <i data-lucide="check" class="w-3.5 h-3.5"></i> Active LTS Compatible
+                </div>
             </div>
 
+            {{-- NPM Version --}}
+            <div class="p-5 rounded-2xl bg-white dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 shadow-sm">
+                <div class="flex items-center justify-between text-slate-500 dark:text-slate-400 mb-2">
+                    <span class="text-xs font-bold uppercase tracking-wider">NPM Package CLI</span>
+                    <i data-lucide="package" class="w-4 h-4 text-red-500"></i>
+                </div>
+                <div class="text-2xl font-bold font-mono text-slate-900 dark:text-white">v{{ $npmVersion }}</div>
+                <div class="text-xs text-slate-500 dark:text-slate-400 mt-1">Ready for modern lockfiles</div>
+            </div>
+
+            {{-- Vite 5 Engine --}}
+            <div class="p-5 rounded-2xl bg-white dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 shadow-sm">
+                <div class="flex items-center justify-between text-slate-500 dark:text-slate-400 mb-2">
+                    <span class="text-xs font-bold uppercase tracking-wider">Vite Bundler</span>
+                    <i data-lucide="zap" class="w-4 h-4 text-purple-500"></i>
+                </div>
+                <div class="text-2xl font-bold font-mono text-slate-900 dark:text-white">{{ $viteVersion }}</div>
+                <div class="text-xs text-purple-500 font-medium mt-1">Vite 5 Fast HMR Engine</div>
+            </div>
+
+            {{-- Health Percentage --}}
+            <div class="p-5 rounded-2xl bg-white dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 shadow-sm">
+                <div class="flex items-center justify-between text-slate-500 dark:text-slate-400 mb-2">
+                    <span class="text-xs font-bold uppercase tracking-wider">Environment Health</span>
+                    <i data-lucide="shield-check" class="w-4 h-4 text-teal-500"></i>
+                </div>
+                <div class="text-2xl font-bold font-mono text-teal-500">{{ $healthPercentage }}%</div>
+                <div class="text-xs text-slate-500 dark:text-slate-400 mt-1">{{ $healthyCount }} of {{ $totalChecks }} checks passing</div>
+            </div>
         </div>
 
+        {{-- 1. NPM Script Runner & Web Terminal Console --}}
+        <div class="rounded-2xl bg-white dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden">
+            <div class="p-4 border-b border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/80 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                <div class="flex items-center gap-2">
+                    <i data-lucide="terminal" class="w-5 h-5 text-emerald-500"></i>
+                    <div>
+                        <h2 class="text-sm font-bold text-slate-900 dark:text-white">NPM Script Runner & Live Terminal Console</h2>
+                        <p class="text-xs text-slate-500 dark:text-slate-400">Trigger frontend build commands and inspect console stdout output.</p>
+                    </div>
+                </div>
 
+                {{-- Action Buttons --}}
+                <div class="flex flex-wrap items-center gap-2">
+                    {{-- Build Script --}}
+                    <form method="POST" action="{{ route('frontend.dashboard.run-script') }}">
+                        @csrf
+                        <input type="hidden" name="action" value="build">
+                        <button type="submit" class="px-3.5 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-semibold flex items-center gap-1.5 shadow-sm shadow-emerald-600/20 transition-all">
+                            <i data-lucide="play" class="w-3.5 h-3.5"></i>
+                            <span>npm run build</span>
+                        </button>
+                    </form>
 
-        <!-- Health -->
+                    {{-- List Packages --}}
+                    <form method="POST" action="{{ route('frontend.dashboard.run-script') }}">
+                        @csrf
+                        <input type="hidden" name="action" value="list">
+                        <button type="submit" class="px-3.5 py-1.5 rounded-xl bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 text-xs font-semibold border border-slate-300 dark:border-slate-700 flex items-center gap-1.5 transition-all">
+                            <i data-lucide="list" class="w-3.5 h-3.5"></i>
+                            <span>npm list</span>
+                        </button>
+                    </form>
 
-        <section
-            class="dashboard-section"
-            data-search="health environment status system">
+                    {{-- Audit Script --}}
+                    <form method="POST" action="{{ route('frontend.dashboard.run-script') }}">
+                        @csrf
+                        <input type="hidden" name="action" value="audit">
+                        <button type="submit" class="px-3.5 py-1.5 rounded-xl bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 text-xs font-semibold border border-slate-300 dark:border-slate-700 flex items-center gap-1.5 transition-all">
+                            <i data-lucide="shield-alert" class="w-3.5 h-3.5 text-amber-500"></i>
+                            <span>npm audit</span>
+                        </button>
+                    </form>
+                </div>
+            </div>
 
-            <div
-                class="mb-4 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+            {{-- Terminal Window --}}
+            <div class="p-4 bg-slate-950 font-mono text-xs text-emerald-400">
+                <div class="flex items-center justify-between pb-2 mb-2 border-b border-slate-800 text-slate-500 text-[11px]">
+                    <div class="flex items-center gap-1.5">
+                        <span class="w-2.5 h-2.5 rounded-full bg-red-500 inline-block"></span>
+                        <span class="w-2.5 h-2.5 rounded-full bg-yellow-500 inline-block"></span>
+                        <span class="w-2.5 h-2.5 rounded-full bg-green-500 inline-block"></span>
+                        <span class="ml-2 text-slate-400 font-semibold">$ {{ $lastExecution['command'] ?? 'npm run build' }}</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="text-slate-400">Duration: <strong>{{ $lastExecution['duration_ms'] ?? 0 }}ms</strong></span>
+                        <span class="text-slate-600">•</span>
+                        <span class="text-slate-400">Time: {{ $lastExecution['executed_at'] ?? now()->format('H:i:s') }}</span>
+                        <span class="px-1.5 py-0.5 rounded text-[10px] font-bold {{ ($lastExecution['status'] ?? 'success') === 'success' ? 'bg-emerald-500/20 text-emerald-400' : 'bg-rose-500/20 text-rose-400' }}">
+                            {{ strtoupper($lastExecution['status'] ?? 'SUCCESS') }}
+                        </span>
+                    </div>
+                </div>
+                <pre class="overflow-x-auto whitespace-pre-wrap leading-relaxed py-2 text-slate-200 max-h-72">{{ $lastExecution['output'] ?? 'No command execution recorded.' }}</pre>
+            </div>
+        </div>
 
+        {{-- 2. Node.js LTS Matrix & Tooling Detection Row --}}
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            
+            {{-- Node.js LTS Compatibility Matrix --}}
+            <div class="p-5 rounded-2xl bg-white dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 shadow-sm space-y-4">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-2">
+                        <i data-lucide="check-check" class="w-5 h-5 text-emerald-500"></i>
+                        <h3 class="text-sm font-bold text-slate-900 dark:text-white">Node.js LTS Compatibility Matrix</h3>
+                    </div>
+                    <span class="text-xs text-slate-500 font-mono">Laravel 12 Standard</span>
+                </div>
+
+                <div class="space-y-2.5">
+                    @foreach($ltsMatrix as $lts)
+                        <div class="p-3 rounded-xl border flex items-center justify-between transition-all {{ $lts['is_current'] ? 'bg-emerald-500/10 border-emerald-500/30' : 'bg-slate-50 dark:bg-slate-950/60 border-slate-200 dark:border-slate-800' }}">
+                            <div>
+                                <div class="flex items-center gap-2">
+                                    <span class="font-mono font-bold text-xs text-slate-900 dark:text-white">{{ $lts['version'] }}</span>
+                                    <span class="text-[11px] text-slate-500 dark:text-slate-400">({{ $lts['codename'] }})</span>
+                                    @if($lts['is_current'])
+                                        <span class="px-1.5 py-0.5 rounded text-[10px] font-bold bg-emerald-500/20 text-emerald-500 border border-emerald-500/30">ACTIVE</span>
+                                    @endif
+                                </div>
+                                <div class="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">
+                                    Vite 5: <strong class="text-emerald-500">Supported</strong> • Tailwind 3/4: <strong class="text-emerald-500">Supported</strong>
+                                </div>
+                            </div>
+                            <span class="px-2.5 py-1 rounded-full text-xs font-semibold border {{ $lts['badge'] }}">
+                                {{ $lts['status'] }}
+                            </span>
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+
+            {{-- Tooling & System Telemetry --}}
+            <div class="p-5 rounded-2xl bg-white dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 shadow-sm space-y-4">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-2">
+                        <i data-lucide="cpu" class="w-5 h-5 text-cyan-500"></i>
+                        <h3 class="text-sm font-bold text-slate-900 dark:text-white">Tooling & Runtime Telemetry</h3>
+                    </div>
+                    <span class="text-xs text-slate-500 font-mono">{{ $nodeTelemetry['platform'] }} ({{ $nodeTelemetry['arch'] }})</span>
+                </div>
+
+                {{-- Package Managers Detection --}}
                 <div>
-
-                    <h2 class="section-title">
-                        Environment Health
-                    </h2>
-
-                    <p class="section-description">
-                        Overall frontend environment health.
-                    </p>
-
+                    <div class="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2">Package Managers Availability</div>
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                        @foreach($packageManagers as $mgr => $info)
+                            <div class="p-3 rounded-xl border text-center {{ $info['available'] ? 'bg-emerald-500/5 border-emerald-500/20' : 'bg-slate-50 dark:bg-slate-950/40 border-slate-200 dark:border-slate-800' }}">
+                                <div class="font-bold text-xs uppercase text-slate-800 dark:text-slate-200">{{ $mgr }}</div>
+                                <div class="text-[11px] font-mono mt-0.5 {{ $info['available'] ? 'text-emerald-500 font-semibold' : 'text-slate-400' }}">
+                                    {{ $info['available'] ? $info['version'] : 'Not found' }}
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
                 </div>
 
-
-                <div class="text-right">
-
-                    <p class="text-3xl font-black theme-accent-text">
-                        {{ $healthPercentage }}%
-                    </p>
-
-                    <p class="text-xs text-slate-500">
-                        {{ $healthyCount }}
-                        / {{ $totalChecks }}
-                        checks healthy
-                    </p>
-
+                {{-- Node & V8 Engine Specs --}}
+                <div class="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-950/60 border border-slate-200 dark:border-slate-800 space-y-2 text-xs">
+                    <div class="flex justify-between">
+                        <span class="text-slate-500 dark:text-slate-400">V8 JavaScript Engine:</span>
+                        <strong class="font-mono text-slate-800 dark:text-slate-200">{{ $nodeTelemetry['v8_version'] }}</strong>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-slate-500 dark:text-slate-400">System Architecture:</span>
+                        <strong class="font-mono text-slate-800 dark:text-slate-200">{{ $nodeTelemetry['arch'] }} (64-bit)</strong>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-slate-500 dark:text-slate-400">Node Binary Location:</span>
+                        <span class="font-mono text-[11px] text-slate-500 truncate max-w-xs">{{ $nodeTelemetry['node_path'] }}</span>
+                    </div>
                 </div>
-
             </div>
-
-
-            <div
-                class="mb-6 h-3 overflow-hidden rounded-full bg-slate-200 dark:bg-slate-800">
-
-                <div
-                    class="health-bar h-full rounded-full"
-                    style="width: {{ $healthPercentage }}%"></div>
-
-            </div>
-
-
-            <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-
-                @foreach($environmentChecks as $name => $healthy)
-
-                <div class="dashboard-card">
-
-                    <div
-                        class="flex h-11 w-11 items-center justify-center rounded-xl
-                    {{ $healthy
-                        ? 'bg-green-100 text-green-600 dark:bg-green-900/40 dark:text-green-300'
-                        : 'bg-red-100 text-red-600 dark:bg-red-900/40 dark:text-red-300'
-                    }}">
-                        {{ $healthy ? '✓' : '!' }}
-                    </div>
-
-
-                    <div>
-
-                        <p class="card-label">
-                            {{ $name }}
-                        </p>
-
-                        <p
-                            class="mt-1 text-sm font-semibold
-                        {{ $healthy
-                            ? 'text-green-600 dark:text-green-400'
-                            : 'text-red-600 dark:text-red-400'
-                        }}">
-                            {{ $healthy ? 'Healthy' : 'Not Available' }}
-                        </p>
-
-                    </div>
-
-                </div>
-
-                @endforeach
-
-            </div>
-
-        </section>
-
-
-
-        <!-- Environment -->
-
-        <section
-            class="mt-8 dashboard-section"
-            data-search="laravel php node npm runtime environment versions">
-
-            <div class="mb-4">
-
-                <h2 class="section-title">
-                    Environment Versions
-                </h2>
-
-                <p class="section-description">
-                    Runtime versions currently detected by Laravel.
-                </p>
-
-            </div>
-
-
-            <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-
-                <div class="dashboard-card">
-
-                    <div class="version-icon theme-accent-bg">
-                        L
-                    </div>
-
-                    <div>
-
-                        <p class="card-label">
-                            Laravel
-                        </p>
-
-                        <p class="version-value">
-                            {{ $laravelVersion }}
-                        </p>
-
-                        <p class="status-text">
-                            Framework
-                        </p>
-
-                    </div>
-
-                </div>
-
-
-                <div class="dashboard-card">
-
-                    <div
-                        class="version-icon bg-indigo-100 text-indigo-600 dark:bg-indigo-900/40 dark:text-indigo-300">
-                        P
-                    </div>
-
-                    <div>
-
-                        <p class="card-label">
-                            PHP
-                        </p>
-
-                        <p class="version-value">
-                            {{ $phpVersion }}
-                        </p>
-
-                        <p class="status-text">
-                            Runtime
-                        </p>
-
-                    </div>
-
-                </div>
-
-
-                <div class="dashboard-card">
-
-                    <div
-                        class="version-icon bg-green-100 text-green-600 dark:bg-green-900/40 dark:text-green-300">
-                        N
-                    </div>
-
-                    <div>
-
-                        <p class="card-label">
-                            Node.js
-                        </p>
-
-                        <p class="version-value">
-                            {{ $nodeVersion }}
-
-                            <button
-                                type="button"
-                                class="copy-btn ml-1"
-                                data-copy="{{ $nodeVersion }}">
-                                📋
-                            </button>
-
-                        </p>
-
-                        <p class="status-text">
-                            JavaScript Runtime
-                        </p>
-
-                    </div>
-
-                </div>
-
-
-                <div class="dashboard-card">
-
-                    <div
-                        class="version-icon bg-red-100 text-red-600 dark:bg-red-900/40 dark:text-red-300">
-                        npm
-                    </div>
-
-                    <div>
-
-                        <p class="card-label">
-                            npm
-                        </p>
-
-                        <p class="version-value">
-                            {{ $npmVersion }}
-
-                            <button
-                                type="button"
-                                class="copy-btn"
-                                data-copy="{{ $npmVersion }}">
-                                📋
-                            </button>
-
-                        </p>
-
-                        <p class="status-text">
-                            Package Manager
-                        </p>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-        </section>
-
-
-
-        <!-- Frontend Packages -->
-
-        <section
-            class="mt-8 dashboard-section"
-            data-search="vite tailwind postcss autoprefixer frontend packages">
-
-            <div class="mb-4">
-
-                <h2 class="section-title">
-                    Frontend Stack
-                </h2>
-
-                <p class="section-description">
-                    Installed frontend build and styling technologies.
-                </p>
-
-            </div>
-
-
-            <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-
-                @php
-
-                $frontendPackages = [
-
-                [
-                'name' => 'Vite',
-                'version' => $viteVersion,
-                'type' => 'Build Tool',
-                'color' => 'purple'
-                ],
-
-                [
-                'name' => 'Tailwind CSS',
-                'version' => $tailwindVersion,
-                'type' => 'CSS',
-                'color' => 'cyan'
-                ],
-
-                [
-                'name' => 'PostCSS',
-                'version' => $postcssVersion,
-                'type' => 'Processor',
-                'color' => 'orange'
-                ],
-
-                [
-                'name' => 'Autoprefixer',
-                'version' => $autoprefixerVersion,
-                'type' => 'CSS',
-                'color' => 'blue'
-                ],
-
-                ];
-
-                @endphp
-
-
-                @foreach($frontendPackages as $package)
-
-                <div class="package-card">
-
-                    <div class="package-top">
-
-                        <span class="package-name">
-                            {{ $package['name'] }}
-                        </span>
-
-                        <span
-                            class="package-badge
-                        bg-{{ $package['color'] }}-100
-                        text-{{ $package['color'] }}-700
-                        dark:bg-{{ $package['color'] }}-900/40
-                        dark:text-{{ $package['color'] }}-300">
-                            {{ $package['type'] }}
-                        </span>
-
-                    </div>
-
-
-                    <div
-                        class="mt-4 flex items-center justify-between gap-2">
-
-                        <p class="package-version">
-                            {{ $package['version'] }}
-                        </p>
-
-
-                        <button
-                            type="button"
-                            class="copy-btn"
-                            data-copy="{{ $package['name'] }} {{ $package['version'] }}">
-                            📋 Copy
-                        </button>
-
-                    </div>
-
-                </div>
-
-                @endforeach
-
-            </div>
-
-        </section>
-
-
-
-        <!-- Build Status -->
-
-        <section
-            class="mt-8 dashboard-section"
-            data-search="build vite production manifest npm dev build">
-
-            <div class="mb-4">
-
-                <h2 class="section-title">
-                    Build Status
-                </h2>
-
-                <p class="section-description">
-                    Check whether a production Vite build is currently available.
-                </p>
-
-            </div>
-
-
-            <div
-                class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900">
-
-                <div
-                    class="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
-
-                    <div class="flex items-center gap-4">
-
-                        @if($buildStatus)
-
-                        <div
-                            class="flex h-12 w-12 items-center justify-center rounded-full bg-green-100 text-xl text-green-600 dark:bg-green-900/40 dark:text-green-300">
-                            ✓
-                        </div>
-
-                        <div>
-
-                            <h3 class="font-semibold">
-                                Production build detected
-                            </h3>
-
-                            <p class="text-sm text-slate-500 dark:text-slate-400">
-                                public/build/manifest.json is available.
-                            </p>
-
-                        </div>
-
-                        @else
-
-                        <div
-                            class="flex h-12 w-12 items-center justify-center rounded-full bg-amber-100 text-xl text-amber-600 dark:bg-amber-900/40 dark:text-amber-300">
-                            !
-                        </div>
-
-                        <div>
-
-                            <h3 class="font-semibold">
-                                Development build active
-                            </h3>
-
-                            <p class="text-sm text-slate-500 dark:text-slate-400">
-                                No production manifest detected.
-                            </p>
-
-                        </div>
-
-                        @endif
-
-                    </div>
-
-
-                    <div class="flex flex-wrap gap-2">
-
-                        <code class="command-copy command-box">
-                            npm run dev
-                        </code>
-
-                        <code class="command-copy command-box">
-                            npm run build
-                        </code>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-        </section>
-
-
-
-        <!-- Project Statistics -->
-
-        <section
-            class="mt-8 dashboard-section"
-            data-search="statistics files controllers blade javascript css migrations routes project">
-
-            <div class="mb-4">
-
-                <h2 class="section-title">
-                    Project Statistics
-                </h2>
-
-                <p class="section-description">
-                    Basic statistics collected from the project structure.
-                </p>
-
-            </div>
-
-
-            <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-
-                @foreach($projectStatistics as $name => $count)
-
-                <div class="stat-card">
-
-                    <p class="text-sm text-slate-500 dark:text-slate-400">
-                        {{ ucfirst($name) }}
-                    </p>
-
-                    <p class="mt-2 text-3xl font-black theme-accent-text">
-                        {{ $count }}
-                    </p>
-
-                    <p class="mt-1 text-xs text-slate-400">
-                        Files
-                    </p>
-
-                </div>
-
-                @endforeach
-
-            </div>
-
-        </section>
-
-
-
-        <!-- Dependencies -->
-
-        <section
-            class="mt-8 dashboard-section"
-            data-search="dependencies package json npm packages">
-
-            <div class="mb-4">
-
-                <h2 class="section-title">
-                    NPM Dependencies
-                </h2>
-
-                <p class="section-description">
-                    All dependencies configured in package.json.
-                </p>
-
-            </div>
-
-
-            <div
-                class="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900">
-
-                <div class="overflow-x-auto">
-
-                    <table class="w-full text-left text-sm">
-
-                        <thead
-                            class="bg-slate-100 dark:bg-slate-800">
-
-                            <tr>
-
-                                <th class="px-5 py-4">
-                                    Package
-                                </th>
-
-                                <th class="px-5 py-4">
-                                    Version
-                                </th>
-
-                                <th class="px-5 py-4">
-                                    Type
-                                </th>
-
-                                <th class="px-5 py-4 text-right">
-                                    Action
-                                </th>
-
-                            </tr>
-
-                        </thead>
-
-
-                        <tbody>
-
-                            @forelse($allDependencies as $dependency)
-
-                            <tr
-                                class="border-t border-slate-200 dark:border-slate-800">
-
-                                <td class="px-5 py-4 font-semibold">
-                                    {{ $dependency['name'] }}
-                                </td>
-
-                                <td
-                                    class="px-5 py-4 font-mono text-slate-500">
-                                    {{ $dependency['version'] }}
-                                </td>
-
-                                <td class="px-5 py-4">
-
-                                    <span
-                                        class="rounded-full bg-blue-100 px-3 py-1 text-xs font-semibold text-blue-700 dark:bg-blue-900/40 dark:text-blue-300">
-                                        {{ $dependency['type'] }}
-                                    </span>
-
-                                </td>
-
-                                <td class="px-5 py-4 text-right">
-
-                                    <button
-                                        type="button"
-                                        class="copy-btn"
-                                        data-copy="{{ $dependency['name'] }}@{{ $dependency['version'] }}">
-                                        📋 Copy
-                                    </button>
-
-                                </td>
-
-                            </tr>
-
-                            @empty
-
-                            <tr>
-
-                                <td
-                                    colspan="4"
-                                    class="px-5 py-8 text-center text-slate-500">
-                                    No NPM dependencies found.
-                                </td>
-
-                            </tr>
-
-                            @endforelse
-
-                        </tbody>
-
-                    </table>
-
-                </div>
-
-            </div>
-
-        </section>
-
-
-
-        <!-- NPM Scripts -->
-
-        <section
-            class="mt-8 dashboard-section"
-            data-search="npm scripts package commands dev build script">
-
-            <div class="mb-4">
-
-                <h2 class="section-title">
-                    NPM Scripts
-                </h2>
-
-                <p class="section-description">
-                    Commands configured inside package.json.
-                </p>
-
-            </div>
-
-
-            <div class="grid gap-4 md:grid-cols-2">
-
-                @forelse($scripts as $name => $command)
-
-                <div class="workflow-card">
-
-                    <div class="flex items-center justify-between gap-3">
-
-                        <div>
-
-                            <p class="font-bold">
-                                npm run {{ $name }}
-                            </p>
-
-                            <p
-                                class="mt-1 font-mono text-xs text-slate-500 dark:text-slate-400">
-                                {{ $command }}
-                            </p>
-
-                        </div>
-
-
-                        <button
-                            type="button"
-                            class="copy-btn"
-                            data-copy="npm run {{ $name }}">
-                            📋
-                        </button>
-
-                    </div>
-
-                </div>
-
-                @empty
-
-                <div class="info-card">
-                    No npm scripts configured.
-                </div>
-
-                @endforelse
-
-            </div>
-
-        </section>
-
-
-
-        <!-- Environment Information -->
-
-        <section
-            class="mt-8 dashboard-section"
-            data-search="environment app debug url server operating system">
-
-            <div class="mb-4">
-
-                <h2 class="section-title">
-                    Laravel Environment
-                </h2>
-
-                <p class="section-description">
-                    Current application environment information.
-                </p>
-
-            </div>
-
-
-            <div class="grid gap-5 md:grid-cols-2">
-
-                @foreach($environment as $key => $value)
-
-                <div class="info-card">
-
-                    <p class="info-label">
-                        {{ $key }}
-                    </p>
-
-                    <p class="info-value">
-                        {{ $value }}
-                    </p>
-
-                </div>
-
-                @endforeach
-
-            </div>
-
-        </section>
-
-
-
-        <!-- Theme Manager -->
-
-        <section
-            class="mt-8 dashboard-section"
-            data-search="theme color red blue green purple dark mode">
-
-            <div class="mb-4">
-
-                <h2 class="section-title">
-                    Tailwind Theme Manager
-                </h2>
-
-                <p class="section-description">
-                    Change the interface accent color and dark mode.
-                </p>
-
-            </div>
-
-
-            <div class="theme-manager">
-
-                <h3 class="font-semibold">
-                    Accent Color
-                </h3>
-
-
-                <div class="mt-5 flex flex-wrap gap-3">
-
-                    <button
-                        type="button"
-                        class="theme-option theme-red"
-                        data-theme="red">
-                        Red
-                    </button>
-
-
-                    <button
-                        type="button"
-                        class="theme-option theme-blue"
-                        data-theme="blue">
-                        Blue
-                    </button>
-
-
-                    <button
-                        type="button"
-                        class="theme-option theme-green"
-                        data-theme="green">
-                        Green
-                    </button>
-
-
-                    <button
-                        type="button"
-                        class="theme-option theme-purple"
-                        data-theme="purple">
-                        Purple
-                    </button>
-
-                </div>
-
-            </div>
-
-        </section>
-
-
-
-        <!-- Last Checked -->
-
-        <div
-            class="mt-8 rounded-2xl border border-slate-200 bg-white p-5 text-center shadow-sm dark:border-slate-800 dark:bg-slate-900">
-
-            <p class="text-sm text-slate-500 dark:text-slate-400">
-                Last dashboard check
-            </p>
-
-            <p class="mt-1 font-semibold">
-                {{ $lastChecked }}
-            </p>
 
         </div>
-
-
-
-        <footer
-            class="mt-12 border-t border-slate-200 py-6 text-center text-sm text-slate-500 dark:border-slate-800 dark:text-slate-400">
-
-            Laravel 12 · Node.js · Vite · Tailwind CSS
-
-        </footer>
-
 
     </main>
 
+    {{-- Footer --}}
+    <footer class="border-t border-slate-200 dark:border-slate-800 py-4 text-center text-xs text-slate-500 bg-white dark:bg-slate-950">
+        <p>PHP Laravel 12 Node.js Upgrade & Vite 5 Diagnostics Dashboard</p>
+    </footer>
 
-    <!-- Toast -->
+    {{-- Scripts for Theme Switcher & Icons --}}
+    <script>
+        // Initialize Theme from LocalStorage
+        function initTheme() {
+            const savedTheme = localStorage.getItem('tailwind_theme') || 'dark';
+            if (savedTheme === 'dark') {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+            }
+            updateThemeIcon();
+        }
 
-    <div
-        id="toast"
-        class="fixed bottom-5 right-5 z-50 hidden rounded-xl bg-slate-900 px-5 py-3 text-sm font-semibold text-white shadow-xl">
-        Copied!
-    </div>
+        function toggleTheme() {
+            const isDark = document.documentElement.classList.toggle('dark');
+            localStorage.setItem('tailwind_theme', isDark ? 'dark' : 'light');
+            updateThemeIcon();
+        }
 
+        function updateThemeIcon() {
+            const isDark = document.documentElement.classList.contains('dark');
+            const icon = document.getElementById('themeIcon');
+            if (icon) {
+                icon.setAttribute('data-lucide', isDark ? 'sun' : 'moon');
+                if (window.lucide) {
+                    window.lucide.createIcons();
+                }
+            }
+        }
 
+        document.addEventListener('DOMContentLoaded', () => {
+            initTheme();
+            if (window.lucide) {
+                window.lucide.createIcons();
+            }
+        });
+    </script>
 </body>
-
 </html>
