@@ -5,40 +5,21 @@ use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
-| Welcome Page
+| Web Routes
 |--------------------------------------------------------------------------
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect()->route('frontend.dashboard');
 })->name('home');
 
-
 /*
 |--------------------------------------------------------------------------
-| Frontend Environment Dashboard
+| Frontend & Node.js Environment Dashboard
 |--------------------------------------------------------------------------
 */
-
-Route::get(
-    '/frontend-dashboard',
-    [
-        FrontendDashboardController::class,
-        'index'
-    ]
-)->name('frontend.dashboard');
-
-
-/*
-|--------------------------------------------------------------------------
-| Export Dashboard Report
-|--------------------------------------------------------------------------
-*/
-
-Route::get(
-    '/frontend-dashboard/export',
-    [
-        FrontendDashboardController::class,
-        'export'
-    ]
-)->name('frontend.dashboard.export');
+Route::prefix('frontend-dashboard')->name('frontend.dashboard')->group(function () {
+    Route::get('/', [FrontendDashboardController::class, 'index']);
+    Route::post('/run-script', [FrontendDashboardController::class, 'runScript'])->name('.run-script');
+    Route::get('/export', [FrontendDashboardController::class, 'export'])->name('.export');
+});
